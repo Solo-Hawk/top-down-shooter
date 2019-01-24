@@ -59,11 +59,23 @@ function preload(){
     url: 'assets/map/map.json'
   })
 
-
 }
 
 function create(){
+  // Game Manager (adding it to Phaser Game Scene)
+  this.manager = new GameManager(this)
 
+  // Map Generation
+  createMap.call(this)
+
+
+  // Camera and Mouse
+  camera = this.cameras.main
+  mouse = this.input.activePointer
+  this.cameras.main.setBounds(0, 0, this.map.widthInPixels, this.map.heightInPixels);
+
+  // Physics Setup
+  this.physics.world.setBounds(0, 0, this.map.widthInPixels, this.map.heightInPixels);
   //-------------//
   console.log(this)
 }
@@ -74,6 +86,12 @@ function update(){
 
 //----------------------------------------------//
 //----------------------------------------------//
+
+function createMap(){
+  this.map = this.make.tilemap({key:'map'})
+  var terrain = this.map.addTilesetImage('terrain', 'terrain');
+  this.map.createStaticLayer('ground', terrain,0,0)
+}
 
 function createAnims(){
   this.anims.create({
